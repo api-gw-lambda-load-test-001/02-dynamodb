@@ -12,7 +12,7 @@ references:
   docker_python: &docker_python
     docker:
       - image: circleci/python:3.8.2
-        *auth_dockerhub
+        <<:*auth_dockerhub
 
   restore_dependencies: &restore_dependencies
     restore_cache:
@@ -41,15 +41,15 @@ references:
 
 jobs:
   deploy:
-    *docker_python
+    <<:*docker_python
     environment:
-      *region
+      <<:*region
     steps:
       - checkout
-      - *set_poetry_in_project_true
-      - *restore_dependencies
-      - *install_dependencies
-      - *save_dependencies
+      - <<:*set_poetry_in_project_true
+      - <<:*restore_dependencies
+      - <<:*install_dependencies
+      - <<:*save_dependencies
       - run:
           name: deploy
           command: |
@@ -58,15 +58,15 @@ jobs:
             make deploy
 
   prepare_dynamodb:
-    *docker_python
+    <<:*docker_python
     environment:
-      *region
+      <<:*region
     steps:
       - checkout
-      - *set_poetry_in_project_true
-      - *restore_dependencies
-      - *install_dependencies
-      - *save_dependencies
+      - <<:*set_poetry_in_project_true
+      - <<:*restore_dependencies
+      - <<:*install_dependencies
+      - <<:*save_dependencies
       - run:
           name: prepare dynamodb
           command: |

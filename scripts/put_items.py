@@ -1,6 +1,7 @@
 import hashlib
 import boto3
 import os
+from datetime import datetime
 
 
 def get_dynamodb_table_name():
@@ -28,6 +29,9 @@ def main():
     table_name = get_dynamodb_table_name()
     with create_batch_writer(table_name) as batch:
         for i in range(110000):
+            num = i + 1
+            if num % 1000 == 0:
+                print(f'=== {num} ({datetime.now()}) ===')
             item = {
                 'id': create_md5_hexdigest(i + 1)
             }

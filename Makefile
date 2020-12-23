@@ -8,6 +8,7 @@ deploy:
 		--stack-name $(stack_name) \
 		--template-file template.yml \
 		--capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
+		--role-arn $$CLOUDFORMATION_DEPLOY_ROLE_ARN \
 		--no-fail-on-empty-changeset
 
 prepare-dynamodb:

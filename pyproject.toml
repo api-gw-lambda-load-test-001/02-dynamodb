@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "lambda-runtime-tweeter-prepare"
+name = "api-gw-lambda-load-test-001-01-dynamodb"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]

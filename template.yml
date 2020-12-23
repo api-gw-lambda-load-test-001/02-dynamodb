@@ -1,67 +1,15 @@
 ---
 AWSTemplateFormatVersion: "2010-09-09"
-Description: lambda-runtime-tweeter-prepare
+Transform: AWS::Serverless-2016-10-31
+Description: api-gw-lambda-load-test-001/02-dynamodb
 
 Resources:
-  SAMDeployUser:
-    Type: AWS::IAM::User
+  DataTable:
+    Type: AWS::Serverless::SimpleTable
+
+  SsmParameterDataTableName:
+    Type: AWS::SSM::Parameter
     Properties:
-      UserName: sam-deploy-user
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonS3FullAccess
-      Policies:
-        - PolicyName: CloudFormationDeployPolicy
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action:
-                  - cloudformation:*
-                  - iam:PassRole
-                Resource:
-                  - "*"
-
-  SSMDeployUser:
-    Type: AWS::IAM::User
-    Properties:
-      UserName: ssm-deploy-user
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonSSMFullAccess
-      Policies:
-        - PolicyName: KMSAdminPolicy
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action:
-                  - kms:*
-                Resource:
-                  - "*"
-
-  CloudFormationDeployRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: cloudformation.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AdministratorAccess
-
-  SAMArtifactBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      LifecycleConfiguration:
-        Rules:
-          - ExpirationInDays: 7
-            Status: Enabled
-
-Outputs:
-  SAMArtifactBucketName:
-    Value: !Ref SAMArtifactBucket
-
-  CloudFormationDeployRoleArn:
-    Value: !GetAtt CloudFormationDeployRole.Arn
+      Name: /api-gw-lambda-load-test/001/DataTableName
+      Type: String
+      Value: !Ref DataTable
